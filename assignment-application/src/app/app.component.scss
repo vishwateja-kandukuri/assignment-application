@@ -29,10 +29,11 @@
     font-size: 10px;
 }
 .button-item{
-    border: none;
+    border: 1px solid gray;
     background: white;
     border-radius: 5px;
     margin-right: 5px;
+    cursor: pointer;
 }
 .example-form {
     min-width: 150px;
@@ -47,5 +48,11 @@
 ::ng-deep  .mat-menu-content:not(:empty) {
       padding-top: 0px !important;
       padding-bottom: 0px !important;
+  }
+  ::ng-deep .mat-menu-panel {
+      min-height: auto !important;
+  }
+  ::ng-deep .mat-menu-item {
+      cursor: default !important;
   }
   

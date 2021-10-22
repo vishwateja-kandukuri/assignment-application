@@ -12,14 +12,14 @@
       </form>
     <div class="list-container">
         <span *ngIf="listOfValues[0]" class="list-item"><button class="button-item" mat-button color="primary"
-                (click)="removeData(listOfValues[0])">x</button>{{listOfValues[0]}}</span>
+                (click)="removeData(listOfValues[0])">×</button>{{listOfValues[0]}}</span>
         <span *ngIf="listOfValues[1]" class="list-item"><button class="button-item" mat-button color="primary"
-                (click)="removeData(listOfValues[1])">x</button>{{listOfValues[1]}}</span>
+                (click)="removeData(listOfValues[1])">×</button>{{listOfValues[1]}}</span>
         <span *ngIf="listOfValues.length>2" class="list-item">
             <button mat-button class="button-item" [matMenuTriggerFor]="menu">See all</button>
             <mat-menu #menu="matMenu" yPosition="below">
                 <span mat-menu-item class="list-item-menu" *ngFor="let item of listOfValues.slice(2)"><button class="button-item" mat-button color="primary"
-                    (click)="removeData(item)">x</button>{{item}}</span>
+                    (click)="removeData(item)">×</button>{{item}}</span>
             </mat-menu>
         </span>
     </div>
