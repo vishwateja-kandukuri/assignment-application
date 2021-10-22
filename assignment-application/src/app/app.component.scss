@@ -8,9 +8,13 @@
     padding: 8px;
 }
 .main-container {
+    margin-top: 200px !important;
     margin: 24px;
     width: 400px;
     display: grid;
+    background: white;
+    padding: 16px;
+    border-radius: 5px;
 }
 .list-item {
     background-color: turquoise;

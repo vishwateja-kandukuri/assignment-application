@@ -1,24 +1,8 @@
-<!-- <div class="main-container">
-    
-    <input class="input-field" matInput placeholder="Location" value="Sushi" (keyup.enter)="addData()"
-        [(ngModel)]="fieldValue">
-    <div class="list-container">
-        <span *ngIf="listOfValues[0]" class="list-item"><button class="button-item" mat-button color="primary"
-                (click)="removeData(listOfValues[0])">x</button>{{listOfValues[0]}}</span>
-        <span *ngIf="listOfValues[1]" class="list-item"><button class="button-item" mat-button color="primary"
-                (click)="removeData(listOfValues[1])">x</button>{{listOfValues[1]}}</span>
-        <span *ngIf="listOfValues.length>2" class="list-item">
-            <button mat-button [matMenuTriggerFor]="menu">More</button>
-            <mat-menu #menu="matMenu" yPosition="below">
-                <span mat-menu-item *ngFor="let item of listOfValues">{{item}}</span>
-            </mat-menu>
-        </span>
-    </div>
-</div> -->
 <div class="main-container">
+    <h3>Please enter your desired location:</h3>
     <form class="example-form">
         <mat-form-field class="example-full-width">
-          <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="addData()">
+          <input type="text" placeholder="location" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="addData()">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
               {{ option }}

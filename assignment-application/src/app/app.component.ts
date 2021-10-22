@@ -6,6 +6,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, catchError, startWith } from 'rxjs/operators';
+import { LocationDataService } from './location-data.service';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,19 @@ import { map, catchError, startWith } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  simpleOptions = ["One", "Two", "Three"];
-  listOfValues : string[] = [];
-  previousLocations: string[] = ["warangal", "hyderabad"];
 
-  //
+  constructor(private locationDataService: LocationDataService){}
+
+  listOfValues : string[] = [];
+  previousLocations: string[] = [];
+
   myControl: FormControl = new FormControl();
   filteredOptions!: Observable<string[]>;
 
   ngOnInit() {
+    this.locationDataService.getAllPreviousLocations().subscribe((data) => {
+      this.previousLocations = ["Hyderabad","Warangal","Karimnagar"];
+    });
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
@@ -30,29 +35,37 @@ export class AppComponent {
   }
 
   filter(val: string): string[] {
-    return this.previousLocations.filter(option =>
-      option.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    if(this.myControl.dirty){
+      return this.getSearchSuggestions(val);
+    } else {
+      return this.previousLocations.filter(option =>
+        option.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    }
   }
-  //
+
+  getSearchSuggestions(val: string): string[] {
+    let apiResultList: string[]=[];
+    this.locationDataService.getLocationsFromAPI(val).subscribe((data)=>{
+      if(data.items){
+        data.items.forEach((element: any) => {
+          apiResultList.push(element.title);
+        });
+      }
+    });
+    return apiResultList;
+  }
   
   public addData() {
     let val = this.myControl.value;
-    let tempList = val.split(',');
-    tempList.forEach((element: string) => {
-      if (!this.listOfValues.includes(element)) {
-        this.listOfValues.push(element);
+    if (/\S/.test(val)) {
+      val = val.split(',')[0];
+      if (!this.listOfValues.includes(val)) {
+        this.listOfValues.push(val);
       }
-    });
-    tempList.forEach((element: string) => {
-      if(!this.previousLocations.includes(element)) {
-        this.previousLocations.push(element);
-      }
-    });
-    this.resetForm();
-  }
-  public resetForm() {
+    }
     this.myControl.setValue('');
   }
+
   public removeData(item: string){
     this.listOfValues.forEach((element, index) => {
       if(item===element) {
