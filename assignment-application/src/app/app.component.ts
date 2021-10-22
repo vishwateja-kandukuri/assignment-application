@@ -15,38 +15,45 @@ import { LocationDataService } from './location-data.service';
 })
 export class AppComponent {
 
-  constructor(private locationDataService: LocationDataService){}
+  constructor(private locationDataService: LocationDataService) { }
 
-  listOfValues : string[] = [];
+  listOfValues: string[] = [];
   previousLocations: string[] = [];
 
   myControl: FormControl = new FormControl();
   filteredOptions!: Observable<string[]>;
 
   ngOnInit() {
-    this.locationDataService.getAllPreviousLocations().subscribe((data) => {
-      this.previousLocations = ["Hyderabad","Warangal","Karimnagar"];
-    });
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map((val: string) => this.filter(val))
-      );
+    let loadPreviousLocations = new Promise<void>((resolve, reject) => {
+      // this.locationDataService.getAllPreviousLocations().subscribe((data) => {
+      //   this.previousLocations = ["Hyderabad","Warangal","Karimnagar"];
+      //   resolve();
+      // });
+      this.previousLocations = ["Hyderabad", "Warangal", "Karimnagar"];
+      resolve();
+    })
+    loadPreviousLocations.then(() => {
+      this.filteredOptions = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map((val: string) => this.filter(val))
+        );
+    })
   }
 
   filter(val: string): string[] {
-    if(this.myControl.dirty){
-      return this.getSearchSuggestions(val);
-    } else {
+    if (this.myControl.pristine) {
       return this.previousLocations.filter(option =>
         option.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    } else {
+      return val ? this.getSearchSuggestions(val) : [];
     }
   }
 
   getSearchSuggestions(val: string): string[] {
-    let apiResultList: string[]=[];
-    this.locationDataService.getLocationsFromAPI(val).subscribe((data)=>{
-      if(data.items){
+    let apiResultList: string[] = [];
+    this.locationDataService.getLocationsFromAPI(val).subscribe((data) => {
+      if (data.items) {
         data.items.forEach((element: any) => {
           apiResultList.push(element.title);
         });
@@ -54,24 +61,39 @@ export class AppComponent {
     });
     return apiResultList;
   }
-  
-  public addData() {
+
+  addData() {
     let val = this.myControl.value;
     if (/\S/.test(val)) {
       val = val.split(',')[0];
       if (!this.listOfValues.includes(val)) {
         this.listOfValues.push(val);
       }
+      if (!this.previousLocations.includes(val)) {
+        this.previousLocations.push(val);
+      }
     }
-    this.myControl.setValue('');
+    this.locationDataService.saveLocation(val).subscribe((resp) => {
+      console.log('location saved');
+    });
+    this.resetFormControl();
   }
 
-  public removeData(item: string){
+  removeData(item: string) {
     this.listOfValues.forEach((element, index) => {
-      if(item===element) {
-        this.listOfValues.splice(index,1);
+      if (item === element) {
+        this.listOfValues.splice(index, 1);
       }
     });
+  }
+
+  resetFormControl() {
+    this.myControl.reset();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map((val: string) => this.filter(val))
+      );
   }
 }
 

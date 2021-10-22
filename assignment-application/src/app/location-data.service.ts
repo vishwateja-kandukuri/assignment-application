@@ -10,16 +10,11 @@ export class LocationDataService {
 
   constructor(protected http: HttpClient) { }
 
-  public saveCurrentList(locationInput: string) : Observable<HttpResponse<any>> {
+  public saveLocation(locationInput: string) : Observable<HttpResponse<any>> {
     let url = 'http://localhost:8080/assignment/saveCurrentList';
     let locationInfo = new LocationInfo();
     locationInfo.locationInput=locationInput;
     return this.http.post<any>(url,locationInfo).pipe();
-  }
-
-  public getMatchingList(keyword:string) {
-    let url = 'http://localhost:8080/assignment/getMatchingList?keyword='+keyword;
-    return this.http.get<any>(url).pipe();
   }
 
   public getAllPreviousLocations() {
