@@ -1,30 +1,47 @@
 .input-field {
-    width: 200px;
+    width: 260px;
     height: 50px;
     margin-bottom: 4px;
     font-size: large;
+    margin-top: 10%;
+    border: 2px solid gray;
+    padding: 8px;
 }
 .main-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-.list-container{
-    flex-direction: row;
-    display: flex;
+    margin: 24px;
+    width: 400px;
+    display: grid;
 }
 .list-item {
     background-color: turquoise;
     font-family: 'Courier New', Courier, monospace;
     font-size: 10px;
     padding: 8px;
-    display: flex;
-    align-items: center;
     margin: 4px;
+}
+.list-item-menu {
+    background-color: turquoise;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
 }
 .button-item{
     border: none;
     background: white;
-    display: flex;
-    align-items: center;
+    border-radius: 5px;
+    margin-right: 5px;
 }
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+::ng-deep  .mat-menu-content:not(:empty) {
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
+  }
+  
