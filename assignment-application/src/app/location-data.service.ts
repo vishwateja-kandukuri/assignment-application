@@ -11,14 +11,14 @@ export class LocationDataService {
   constructor(protected http: HttpClient) { }
 
   public saveLocation(locationInput: string) : Observable<HttpResponse<any>> {
-    let url = 'http://localhost:8080/assignment/saveCurrentList';
+    let url = 'http://localhost:8080/saveLocation';
     let locationInfo = new LocationInfo();
     locationInfo.locationInput=locationInput;
     return this.http.post<any>(url,locationInfo).pipe();
   }
 
   public getAllPreviousLocations() {
-    let url = 'http://localhost:8080/assignment/readAll'
+    let url = 'http://localhost:8080/readAll'
     return this.http.get<any>(url).pipe();
   }
 

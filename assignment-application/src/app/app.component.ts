@@ -7,6 +7,7 @@ import { Options } from 'ngx-google-places-autocomplete/objects/options/options'
 import { Observable } from 'rxjs/internal/Observable';
 import { map, catchError, startWith } from 'rxjs/operators';
 import { LocationDataService } from './location-data.service';
+import { LocationInfo } from './model/LocationInfoDTO';
 
 @Component({
   selector: 'app-root',
@@ -25,12 +26,11 @@ export class AppComponent {
 
   ngOnInit() {
     let loadPreviousLocations = new Promise<void>((resolve, reject) => {
-      // this.locationDataService.getAllPreviousLocations().subscribe((data) => {
-      //   this.previousLocations = ["Hyderabad","Warangal","Karimnagar"];
-      //   resolve();
-      // });
-      this.previousLocations = ["Hyderabad", "Warangal", "Karimnagar"];
-      resolve();
+      this.locationDataService.getAllPreviousLocations().subscribe((data) => {
+        let locations : LocationInfo[] = data.content;
+        locations.forEach(element => this.previousLocations.push(element.locationInput));
+        resolve();
+      });
     })
     loadPreviousLocations.then(() => {
       this.filteredOptions = this.myControl.valueChanges
