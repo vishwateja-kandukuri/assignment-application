@@ -23,7 +23,7 @@ export class LocationDataService {
   }
 
   getLocationsFromAPI(val: string) {
-    let url = 'https://geocode.search.hereapi.com/v1/geocode?q='+val+'&apiKey=zCAHMjAZ-nJcYskS5b-_H2tJ3jW0rgcxYvzeU4PydTs';
+    let url = 'https://geocode.search.hereapi.com/v1/geocode?q='+val+'&apiKey=';
     return this.http.get<any>(url);
   }
 
